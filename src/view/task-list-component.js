@@ -1,6 +1,6 @@
 import { createElement, render } from '../framework/render.js';
-import { Status, StatusLabel } from '../const.js'; // Импортируем Status и StatusLabel
-import TaskComponent from './task-component.js'; // Убедитесь, что это правильный импорт
+import { Status, StatusLabel } from '../const.js'; 
+import TaskComponent from './task-component.js'; 
 
 function createTaskListComponentTemplate(status) {
     return (
@@ -12,9 +12,9 @@ function createTaskListComponentTemplate(status) {
 
 export default class TaskListComponent {
     constructor({ status }) {
-        this.status = status; // Храним статус, чтобы использовать его в шаблоне
-        this.tasks = []; // Инициализируем массив для задач
-        this.element = null; // Инициализируем элемент
+        this.status = status; 
+        this.tasks = []; 
+        this.element = null; 
     }
 
     getTemplate() {
@@ -29,13 +29,13 @@ export default class TaskListComponent {
     }
 
     addTask(task) {
-        this.tasks.push(task); // Добавляем задачу в массив
+        this.tasks.push(task); 
 
-        const taskComponent = new TaskComponent({ task }); // Создаем новый экземпляр TaskComponent
-        render(taskComponent, this.getElement()); // Используем getElement() для добавления задачи в компонент списка задач
+        const taskComponent = new TaskComponent({ task });
+        render(taskComponent, this.getElement());
     }
 
     removeElement() {
-        this.element = null; // Удаляем элемент для последующего создания нового
+        this.element = null; 
     }
 }

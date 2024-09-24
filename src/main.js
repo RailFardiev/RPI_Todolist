@@ -9,11 +9,10 @@ const bodyContainer = document.querySelector('.board-app');
 render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
 render(new FormAddTaskComponent(), bodyContainer);
 
-// Сначала создаем и отрисовываем TaskAreaComponent
 const taskAreaComponent = new TaskAreaComponent();
-render(taskAreaComponent, bodyContainer); // Отрисовываем TaskAreaComponent
+render(taskAreaComponent, bodyContainer); 
 
-const tasksBoardContainer = taskAreaComponent.getElement(); // Получаем элемент TaskAreaComponent
+const tasksBoardContainer = taskAreaComponent.getElement();
 
 const tasksModel = new TasksModel();
 const tasksBoardPresenter = new TasksBoardPresenter({
