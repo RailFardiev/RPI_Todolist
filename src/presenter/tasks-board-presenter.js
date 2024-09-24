@@ -1,42 +1,28 @@
-import TasksListComponent from '../view/task-list-component.js';
-import TaskComponent from '../view/task-component.js';
-import TaskBoardComponent from '../view/task-area-component.js';
-import { render } from '../framework/render.js';
+import TaskListComponent from '../view/task-list-component.js'; // Проверьте путь
+import TaskComponent from '../view/task-component.js'; // Убедитесь, что он тоже импортирован
+import { render } from '../framework/render.js'; // Убедитесь, что это импортировано
 
 export default class TasksBoardPresenter {
-  tasksBoardComponent = new TaskBoardComponent();
-
-  constructor({ boardContainer, taskModel }) {
-    this.boardContainer = boardContainer;
-    this.taskModel = taskModel;
-  }
-
-  init() {
-    this.boardTasks = [...this.taskModel.getTasks()]; // Получаем задачи из модели
-
-    // Создаём контейнер для доски задач
-    const tasksBoardContainer = document.createElement('div');
-    tasksBoardContainer.classList.add('task-board');
-    render(this.tasksBoardComponent, this.boardContainer); // Рендерим компонент доски задач
-
-    this.boardTasks.filter(task => task.status == "backlog").forEach(task => {
-
-    });
-
-    // Рендеринг списков задач
-    for (let i = 0; i < Math.min(this.boardTasks.length, 4); i++) {
-      const tasksListComponent = new TasksListComponent({ task: this.boardTasks[i] }); // Передаем задачу в компонент
-      render(tasksListComponent, tasksBoardContainer); // Рендерим список задач в контейнер
-
-      // Рендеринг задач внутри каждого списка
-      for (let j = 0; j < Math.min(this.boardTasks.length, 4); j++) {
-        const task = this.boardTasks[j];
-        const taskComponent = new TaskComponent({ task }); // Передаем задачу в компонент
-        render(taskComponent, tasksListComponent.getElement()); // Рендерим задачу в списке задач
-      }
+    constructor({ boardContainer, tasksModel }) {
+        this.boardContainer = boardContainer;
+        this.tasksModel = tasksModel;
     }
 
-    // Добавляем контейнер с задачами в общий DOM
-    this.boardContainer.appendChild(tasksBoardContainer);
-  }
+    init() {
+        const tasks = this.tasksModel.getTasks(); // Получаем задачи из модели
+
+        // Создаем массив для статусов
+        const statuses = ['backlog', 'in-progress', 'completed', 'recycle-bin'];
+
+        statuses.forEach(status => {
+            const taskListComponent = new TaskListComponent({ status }); // Создаем новый компонент списка задач
+            render(taskListComponent, this.boardContainer); // Рендерим список задач в контейнере
+
+            tasks.forEach(task => {
+                if (task.status === status) {
+                    taskListComponent.addTask(task); // Добавляем задачи в соответствующий список
+                }
+            });
+        });
+    }
 }

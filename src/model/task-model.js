@@ -1,13 +1,11 @@
 import { tasks } from '../mock/task.js';
 
-
-
-
 export default class TasksModel {
- boardtasks = tasks;
+    constructor() {
+        this.boardtasks = tasks; // Убедись, что переменная инициализируется
+    }
 
-
- getTasks() {
-   return this.boardtasks;
- }
+    getTasks() {
+        return this.boardtasks;
+    }
 }
