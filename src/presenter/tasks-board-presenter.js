@@ -1,5 +1,4 @@
 import TaskListComponent from '../view/task-list-component.js'; 
-import TaskComponent from '../view/task-component.js';
 import { render } from '../framework/render.js'; 
 
 export default class TasksBoardPresenter {
@@ -10,19 +9,21 @@ export default class TasksBoardPresenter {
 
     init() {
         const tasks = this.tasksModel.getTasks();
-
-        // Создаем массив для статусов
         const statuses = ['backlog', 'in-progress', 'completed', 'recycle-bin'];
 
         statuses.forEach(status => {
-            const taskListComponent = new TaskListComponent({ status }); 
+            const taskListComponent = new TaskListComponent({ status });
             render(taskListComponent, this.boardContainer);
 
-            tasks.forEach(task => {
-                if (task.status === status) {
-                    taskListComponent.addTask(task); 
-                }
-            });
+            const statusTasks = tasks.filter(task => task.status === status);
+
+            if (statusTasks.length > 0) {
+                statusTasks.forEach(task => {
+                    taskListComponent.addTask(task);
+                });
+            } else {
+                taskListComponent.renderEmptyMessage(); 
+            }
         });
     }
 }

@@ -29,12 +29,12 @@ export const tasks = [
     {
         id: `6`,
         title: `Позвонить маме`,
-        status: Status.COMPLETED,
+        status: Status.BACKLOG,
     },
     {
         id: `7`,
         title: `Погладить кота`,
-        status: Status.COMPLETED,
+        status: Status.BACKLOG,
     },
     {
         id: `8`,

@@ -12,7 +12,7 @@ render(new FormAddTaskComponent(), bodyContainer);
 const taskAreaComponent = new TaskAreaComponent();
 render(taskAreaComponent, bodyContainer); 
 
-const tasksBoardContainer = taskAreaComponent.getElement();
+const tasksBoardContainer = taskAreaComponent.element;
 
 const tasksModel = new TasksModel();
 const tasksBoardPresenter = new TasksBoardPresenter({
