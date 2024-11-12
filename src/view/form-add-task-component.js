@@ -1,21 +1,22 @@
-import {createElement} from '../framework/render.js';
-import {AbstractComponent} from '../framework/view/abstract-component.js'; 
+import { AbstractComponent } from '../framework/view/abstract-component.js';
 
 function createFormAddTaskComponentTemplate() {
-    return (
-        `<section class="task-creator">
-            <h3>Новая задача</h3>
-            <input type="text" placeholder="название задачи..." />
-            <button>+ Добавить</button>
-        </section>`
-    );
+  return (
+    `<section class="task-creator">
+        <h2>Новая задача</h2>
+        <div>
+            <form>
+                <input type="text" name="text" class="input-text" placeholder="Название задачи..." required>
+                <button class="input-button"> ＋ Добавить</button>
+            </form>
+        </div>
+     </section>`
+
+  );
 }
 
 export default class FormAddTaskComponent extends AbstractComponent {
-    
-    get template() {
-        return createFormAddTaskComponentTemplate();
-    }
-
-
+  get template() {
+    return createFormAddTaskComponentTemplate();
+  }
 }

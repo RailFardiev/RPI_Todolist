@@ -1,44 +1,62 @@
-import { render, remove } from '../framework/render.js';
-import { StatusLabel } from '../const.js'; 
-import TaskComponent from './task-component.js'; 
-import EmptyTaskListComponent from './empty-task-list-component.js'; 
-import { AbstractComponent } from '../framework/view/abstract-component.js'; 
+import { AbstractComponent } from '../framework/view/abstract-component.js';
 
-function createTaskListComponentTemplate(status) {
-    return (
-        `<div class="task-board ${status}">
-            <h2>${StatusLabel[status]}</h2> 
-            <div class="task-list__tasks"></div>
-        </div>`
-    );
+function createTaskListComponentTemplate(listname, status) {
+  return (
+    `<ul class="task-board ${status}">
+      <h2>${listname}</h3>
+      <ul class="task-list__tasks"></ul>
+    </ul>`
+  );
 }
 
 export default class TaskListComponent extends AbstractComponent {
-    constructor({ status }) {
-        super();
-        this.status = status; 
-        this.tasks = [];
-        this.emptyTaskListComponent = new EmptyTaskListComponent();
-    }
+  constructor(listname, status, onTaskDrop) {
+    super();
+    this.listname = listname;
+    this.status = status;
+    this.onTaskDrop = onTaskDrop;
+    this.#setDropHandler();
+  }
 
-    get template() {
-        return createTaskListComponentTemplate(this.status);
-    }
+  get template() {
+    return createTaskListComponentTemplate(this.listname, this.status);
+  }
 
-    addTask(task) {
-        this.tasks.push(task);
+  #setDropHandler() {
+    const container = this.element.querySelector('.task-list__tasks');
+    
+    
+    let targetIndex = null;
+
+    
+    container.addEventListener('dragover', (event) => {
+      event.preventDefault();
+
+      const targetElement = event.target.closest('.task-item');
+      if (targetElement) {
+        const taskList = Array.from(container.children);
+        targetIndex = taskList.indexOf(targetElement);
         
-        if (this.tasks.length === 1) {
-            remove(this.emptyTaskListComponent);
-        }
+        
+        taskList.forEach(task => task.classList.remove('drag-over'));
+        targetElement.classList.add('drag-over');
+      } else {
+        
+        targetIndex = 0;
+      }
+    });
 
-        const taskComponent = new TaskComponent({ task });
-        render(taskComponent, this.element.querySelector('.task-list__tasks'));
-    }
+    container.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text/plain');
+      
+      
+      container.querySelectorAll('.task-item').forEach(task => task.classList.remove('drag-over'));
 
-    renderEmptyMessage() {
-        if (this.tasks.length === 0) {
-            render(this.emptyTaskListComponent, this.element.querySelector('.task-list__tasks'));
-        }
-    }
+     
+      if (this.onTaskDrop && taskId && targetIndex !== null) {
+        this.onTaskDrop(taskId, this.status, targetIndex);
+      }
+    });
+  }
 }

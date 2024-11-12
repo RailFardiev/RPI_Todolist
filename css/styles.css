@@ -5,6 +5,20 @@ body {
     margin: 0;
     padding: 0;
 }
+.reset-button {
+    background-color: red; /* Красный цвет фона */
+    color: white; /* Белый цвет текста */
+    border: none; /* Убираем границу */
+    padding: 10px 20px; /* Отступы */
+    cursor: pointer; /* Курсор в виде указателя */
+    font-size: 16px; /* Размер шрифта */
+    border-radius: 5px; /* Скругленные углы */
+    transition: background-color 0.3s; /* Плавный переход для цвета фона */
+}
+
+.reset-button:hover {
+    background-color: darkred; /* Цвет при наведении */
+}
 
 header h1 {
     background-color: #007bff;
@@ -31,7 +45,7 @@ header h1 {
     margin: 0;
 }
 
-.task-creator input {
+.input-text {
     width: 70%;
     padding: 0.8rem;
     border-radius: 6px;
@@ -40,7 +54,7 @@ header h1 {
     margin-right: 10px;
 }
 
-.task-creator button {
+.input-button {
     font-size: 1rem;
     padding: 0.8rem 1.2rem;
     background-color: #007bff;

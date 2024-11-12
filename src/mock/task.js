@@ -1,49 +1,38 @@
-import { Status } from '../const.js';
-
 export const tasks = [
-    {
-        id: `1`,
-        title: `Выучить JS`,
-        status: Status.BACKLOG,
+    {  'id': '1',
+        'title': `Выучыить JS`,  
+        'status': `backlog`,  
     },
-    {
-        id: `2`,
-        title: `Сделать домашку`,
-        status: Status.BACKLOG,
+    {  'id': `2`,  
+        'title': `Выучить React`,  
+        'status': `in-progress`,  
     },
-    {
-        id: `3`,
-        title: `Выучить React`,
-        status: Status.BACKLOG,
+    {  'id': '3',
+        'title': `Сделать домашку`,  
+        'status': `recycle-bin`,  
     },
-    {
-        id: `4`,
-        title: `Выпить смузи`,
-        status: Status.IN_PROGRESS,
+    {  'id': `4`,  
+        'title': `Выпить смузи`,  
+        'status': `in-progress`,  
     },
-    {
-        id: `5`,
-        title: `Попить воды`,
-        status: Status.IN_PROGRESS,
+    {  'id': '5',
+        'title': `Выпить смузи`,  
+        'status': `completed`,  
     },
-    {
-        id: `6`,
-        title: `Позвонить маме`,
-        status: Status.BACKLOG,
+    {  'id': `6`,  
+        'title': `Сходить погулять`,  
+        'status': `completed`,  
     },
-    {
-        id: `7`,
-        title: `Погладить кота`,
-        status: Status.BACKLOG,
+    {  'id': '7',
+        'title': `Погладить кота`,  
+        'status': `completed`,  
     },
-    {
-        id: `8`,
-        title: `Сходить погулять`,
-        status: Status.RECYCLE_BIN,
+    {  'id': `8`,  
+        'title': `Сходить погулять`,  
+        'status': `completed`,  
     },
-    {
-        id: `9`,
-        title: `Прочитать войну и мир`,
-        status: Status.RECYCLE_BIN,
+    {  'id': `9`,  
+        'title': `Прочитать Войну и Мир`,  
+        'status': `recycle-bin`,  
     },
-];
+]
