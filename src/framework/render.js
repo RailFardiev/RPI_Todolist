@@ -19,13 +19,13 @@ const RenderPosition = {
   
   function render(component, container, place = RenderPosition.BEFOREEND) {
     if (!(component instanceof AbstractComponent)) {
-      throw new Error('');
+      throw new Error('gwr');
     }
      if (container === null) {
-      throw new Error('');
+      throw new Error('ewg');
     }
      container.insertAdjacentElement(place, component.element);
-  
+   
   } 
   
   export {RenderPosition, createElement, render};

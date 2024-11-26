@@ -6,19 +6,20 @@ body {
     padding: 0;
 }
 .reset-button {
-    background-color: red; /* Красный цвет фона */
-    color: white; /* Белый цвет текста */
-    border: none; /* Убираем границу */
-    padding: 10px 20px; /* Отступы */
-    cursor: pointer; /* Курсор в виде указателя */
-    font-size: 16px; /* Размер шрифта */
-    border-radius: 5px; /* Скругленные углы */
-    transition: background-color 0.3s; /* Плавный переход для цвета фона */
+    background-color: red; 
+    color: white; 
+    border: none; 
+    padding: 10px 20px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    border-radius: 5px; 
+
+}
+.reset-button:disabled {
+    background-color: red;
+    cursor: not-allowed; 
 }
 
-.reset-button:hover {
-    background-color: darkred; /* Цвет при наведении */
-}
 
 header h1 {
     background-color: #007bff;

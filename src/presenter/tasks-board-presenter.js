@@ -4,11 +4,13 @@ import TaskBoardComponent from '../view/task-area-component.js';
 import ButtonComponent from '../view/reset-button-component.js';
 import PlaceholderComponent from '../view/placeholder-component.js';
 import { render } from '../framework/render.js';
+import LoadindViewComponent from '../view/LoadingViewComponent.js';
 
 export default class TasksBoardPresenter {
   #tasksBoardComponent = new TaskBoardComponent();
   #boardContainer;
   #tasksModel;
+  #loadingComponent = new LoadindViewComponent();
 
   constructor({ boardContainer, tasksModel }) {
     this.#boardContainer = boardContainer;
@@ -16,14 +18,28 @@ export default class TasksBoardPresenter {
     this.#tasksModel.addObserver(this.#handleModelChange.bind(this));
   }
 
-  init() {
+  async init() {
     render(this.#tasksBoardComponent, this.#boardContainer);
-    this.#renderBoard();
+    render(this.#loadingComponent, this.#boardContainer);
+    await this.#tasksModel.init();
+    if (this.#loadingComponent.element) {
+      this.#loadingComponent.element.remove();
   }
+  }
+ 
 
   #handleModelChange() {
     this.#clearBoard();
     this.#renderBoard();
+  }
+  #handleModelEvent(event, playload) {
+    switch(event){
+      case UserAction.ADD_TASK:
+      case UserAction.UPDATE_TASK:
+      case UserAction.DELETE_TASK:
+          this.#clearBoard();
+          this.#renderBoard();
+    }
   }
 
   #clearBoard() {
@@ -31,29 +47,34 @@ export default class TasksBoardPresenter {
   }
 
   #renderBoard() {
-    const sortedStatuses = ['backlog', 'in-progress', 'completed', 'recycle-bin'];
+    const sortedStatuses = ["backlog", "in-progress", "completed", "recycle-bin"];
 
     sortedStatuses.forEach((status) => {
-      const list = this.#tasksModel.tasks.find(group => group.status === status);
 
+      const list = this.#tasksModel.tasks[status];
       if (list) {
         const tasksListComponent = new TasksListComponent(list.title, list.status, this.#handleTaskDrop.bind(this));
         render(tasksListComponent, this.#tasksBoardComponent.element);
 
         this.#renderTasksList(tasksListComponent, list.tasks);
 
-        if (status === 'recycle-bin') {
+        if (status === "recycle-bin") {
           const clearButtonComponent = new ButtonComponent();
           tasksListComponent.element.appendChild(clearButtonComponent.element);
-
+          const clearButtonElement = clearButtonComponent.element;
+          if(this.#tasksModel.emptyBasketTasks()){
+            clearButtonElement.disabled = true;
+            clearButtonElement.classList.add('inactive');
+          }
           clearButtonComponent.element.addEventListener('click', () => {
-            this.#tasksModel.clearBasket();
-            clearButtonComponent.element.disabled = true;
+            this.#handleClearBasketClick();
           });
         }
       }
     });
   }
+
+  
 
   #renderTasksList(tasksListComponent, tasks) {
     const tasksListElement = tasksListComponent.element.querySelector('.task-list__tasks');
@@ -72,8 +93,28 @@ export default class TasksBoardPresenter {
     const taskComponent = new TaskComponent(task);
     render(taskComponent, container);
   }
+ 
+  async #handleTaskDrop(taskId, newStatus, newIndex) {
+    try{
+      render(this.#loadingComponent, this.#boardContainer);
+      await this.#tasksModel.updateTaskStatus(taskId,newStatus, newIndex);
+      if (this.#loadingComponent.element) {
+        this.#loadingComponent.element.remove();
+    }
+    }catch (err){
+      console.error('Ошибка при обновлении статуса задачи: ', err);
 
-  #handleTaskDrop(taskId, newStatus, newIndex) {
-    this.#tasksModel.updateTaskStatus(taskId, newStatus, newIndex);
-  }  
+    }
+  } 
+  async #handleClearBasketClick(){
+    try{
+      render(this.#loadingComponent, this.#boardContainer);
+      await this.#tasksModel.clearBasketTasks();
+      if (this.#loadingComponent.element) {
+        this.#loadingComponent.element.remove();
+    }
+    }catch(err){
+      console.error('Ошибка при очистке корзины: ', err);
+    }
+  }
 }

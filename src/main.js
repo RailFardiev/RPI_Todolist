@@ -5,13 +5,18 @@ import { render, RenderPosition } from './framework/render.js';
 import TasksBoardPresenter from './presenter/tasks-board-presenter.js';
 import TasksModel from './model/task-model.js';
 import { generateTaskId } from './utils.js';
+import TasksApiService from './tasks-api-service.js';
 
+
+const END_POINT = 'https://673cca3b96b8dcd5f3fbb128.mockapi.io';
 const bodyContainer = document.querySelector('.board-app');
 const formContainer = document.querySelector('.placeholder-place');
 const taskAreaContainer = document.querySelector('.task-area');
 const tasksBoardContainer = document.querySelector('.task-area');
 
-const tasksModel = new TasksModel();
+const tasksModel = new TasksModel({
+  tasksApiService: new TasksApiService(END_POINT)
+});
 const tasksBoardPresenter = new TasksBoardPresenter({ boardContainer: tasksBoardContainer, tasksModel });
 
 render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
@@ -30,7 +35,7 @@ formContainer.querySelector('form').addEventListener('submit', (event) => {
       title: taskTitle,
     };
 
-    tasksModel.addTask(newTask); 
+    tasksModel.addTask(newTask.title); 
     inputField.value = ''; 
   }
 });
